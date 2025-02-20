@@ -1,0 +1,57 @@
+{% extends request.ajax ? "layout_blank.html.twig" : "layout_default.html.twig" %}
+
+{% import "macro_functions.html.twig" as mf %}
+
+{% block meta_title %}{{ 'Domainsbot settings'|trans }}{% endblock %}
+
+{% set active_menu = 'system' %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{ '/'|alink }}">
+                <svg class="icon">
+                    <use xlink:href="#home"/>
+                </svg>
+            </a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ 'system'|alink }}">{{ 'Settings'|trans }}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{ 'Domainsbot settings'|trans }}</li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">{{ 'Domainsbot settings'|trans }}</h3>
+        </div>
+
+        {% set params = admin.extension_config_get({ "ext": "domainsbot" }) %}
+        <form method="post" action="{{ 'api/admin/domainsbot/config_save'|link }}" class="api-form"
+              data-api-msg="{{ 'Configuration updated'|trans }}">
+            <input type="hidden" name="CSRFToken" value="{{ CSRFToken }}">
+            <input type="hidden" name="ext" value="domainsbot">
+            <div class="card-body">
+                <p class="card-subtitle">
+                    {{ 'Configure your DomainsBot API integration below to enable domain name suggestions for your users.'|trans }}<br>
+                    {{ 'Obtain your authentication token from'|trans }} 
+                    <a href="https://www.domainsbot.com/" target="_blank">DomainsBot</a> 
+                    {{ 'and enter it in the field below.'|trans }}
+                </p>
+                <div class="mb-3 row">
+                    <label class="col-md-3 col-form-label" for="domainsbot_token">{{ 'Authentication Token'|trans }}</label>
+                    <div class="col-md-6 row">
+                        <input class="form-control" type="text" id="domainsbot_token" name="domainsbot_token"
+                               value="{{ params.domainsbot_token }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer text-end">
+                <button type="submit" class="btn btn-primary">{{ 'Update'|trans }}</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

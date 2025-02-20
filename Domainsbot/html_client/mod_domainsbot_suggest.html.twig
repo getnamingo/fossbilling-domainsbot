@@ -1,0 +1,57 @@
+{% extends request.ajax ? "layout_blank.html.twig" : "layout_default.html.twig" %}
+
+{% block meta_title %}Domain Suggestions{% endblock %}
+
+{% block body_class %}domainsbot{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item active" aria-current="page"><a href="#">Domain Suggestions</a></li>
+{% endblock %}
+
+{% block page_header %}
+<article class="page-header">
+    <h1>Domain Suggestions</h1>
+</article>
+{% endblock%}
+
+{% block content %}
+<style>
+    #bottom {
+        display: none;
+    }
+    #result {
+        white-space: normal;
+        word-wrap: break-word;
+    }
+</style>
+<div class="row">
+    <article class="span12 data-block">
+        <div class="data-container">
+			<div class="container mt-5">
+				<div class="row justify-content-center">
+					<div class="col-md-6">
+						<div class="card shadow-lg">
+							<div class="card-header bg-dark text-white text-center">
+								<h4 class="mb-0">Find Domain Name Suggestions</h4>
+							</div>
+							<div class="card-body">
+								<form method="GET" action="/domainsbot">
+									<div class="mb-3">
+										<label for="domainQuery" class="form-label">Enter a word or phrase:</label>
+										<input type="text" class="form-control" id="domainQuery" name="q" 
+											   placeholder="Type a keyword..." required>
+									</div>
+									<div class="d-grid">
+										<button type="submit" class="btn btn-primary">
+											Get Suggestions
+										</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+        </div>
+    </article>
+</div>
+{% endblock %}
