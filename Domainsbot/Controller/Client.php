@@ -67,19 +67,29 @@ class Client implements \FOSSBilling\InjectionAwareInterface
         }
 
         $c = $this->di['db']->findOne('ExtensionMeta', 'extension = :ext AND meta_key = :key', [':ext' => 'domainsbot', ':key' => 'config']);
+        $tlds = array_column($this->di['db']->getAll('SELECT tld FROM tld'), 'tld');
+        $availableTLDsSet = array_map(fn($tld) => ltrim($tld, '.'), $tlds);
+
         $meta_value = (string) $c->meta_value;
         $config = json_decode($meta_value, true);
 
         $apiToken = $config['domainsbot_token'];
         $response = $this->getDomainSuggestions($apiToken, $q);
+        
+        $filteredDomains = array_filter($response, function($domain) use ($availableTLDsSet) {
+            return in_array($domain['TLD'], $availableTLDsSet);
+        });
 
-        if (!$response) {
+        // Reset array keys
+        $filteredDomains = array_values($filteredDomains);
+
+        if (!$filteredDomains) {
             return $app->render('mod_domainsbot_index', ['error' => 'Failed to fetch domain suggestions.']);
         }
 
         // Format data for Twig (only Domain & Status)
         $domainSuggestions = [];
-        foreach ($response as $suggestion) {
+        foreach ($filteredDomains as $suggestion) {
             $domainSuggestions[] = [
                 'domain' => $suggestion['Domain'],
                 'status' => $suggestion['Data'][6]['Data'] ?? 'unknown',
