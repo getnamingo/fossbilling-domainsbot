@@ -26,7 +26,7 @@
 
 namespace Box\Mod\Domainsbot\Api;
 
-class Admin extends \Api_Abstract
+class Admin extends \FOSSBilling\Api\AbstractApi
 {
     /**
      * Get list of active and inactive extensions on system.

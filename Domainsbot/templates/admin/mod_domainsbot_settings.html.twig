@@ -9,14 +9,14 @@
 {% block breadcrumbs %}
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="{{ '/'|alink }}">
+            <a href="{{ '/'|url }}">
                 <svg class="icon">
                     <use xlink:href="#home"/>
                 </svg>
             </a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ 'system'|alink }}">{{ 'Settings'|trans }}</a>
+            <a href="{{ 'system'|url }}">{{ 'Settings'|trans }}</a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">{{ 'Domainsbot settings'|trans }}</li>
     </ul>
@@ -29,9 +29,7 @@
         </div>
 
         {% set params = admin.extension_config_get({ "ext": "domainsbot" }) %}
-        <form method="post" action="{{ 'api/admin/domainsbot/config_save'|link }}" class="api-form"
-              data-api-msg="{{ 'Configuration updated'|trans }}">
-            <input type="hidden" name="CSRFToken" value="{{ CSRFToken }}">
+        <form method="post" action="{{ 'domainsbot/config_save'|api_url(role='admin') }}" {{ fb_api_form({ message: 'Configuration updated'|trans }) }}>
             <input type="hidden" name="ext" value="domainsbot">
             <div class="card-body">
                 <p class="card-subtitle">

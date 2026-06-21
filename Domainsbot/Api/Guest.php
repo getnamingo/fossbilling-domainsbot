@@ -26,6 +26,6 @@
 
 namespace Box\Mod\Domainsbot\Api;
 
-class Guest extends \Api_Abstract
+class Guest extends \FOSSBilling\Api\AbstractApi
 {
 }
